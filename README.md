@@ -6,6 +6,15 @@ A Flutter app for viewing and controlling three simulated smart home devices. Th
 
 ---
 
+## Team
+
+| Full name | Student ID | Contribution |
+|-----------|------------|--------------|
+| Emre Çelik | 11923640488 | Event data model, Explore screen, search and category filter, README |
+| Işıl Edis | 39376419406 | Details and image viewer screens, join/cancel logic, Favorites/My Events, tests |
+
+---
+
 ## Flutter version
 
 The project was created with Flutter **3.47.6** and Dart **3.13.5**. Check your local SDK with `flutter --version`.
