@@ -1,34 +1,77 @@
 # Smart Home Controller
 
-BIM493 Mobile Programming I · Assignment 2
+**BIM493 – Mobile Programming I | Assignment #2 (2026–2027)**
 
-A Flutter dashboard that simulates three smart devices. It works with local
-state and does not require physical devices.
+A Flutter app for viewing and controlling three simulated smart home devices. The dashboard shows each device's current state and updates it as you interact with the controls.
 
-## Run
+---
 
-Open this folder (the one containing pubspec.yaml) in VS Code. Select an
-Android emulator, a phone, or Chrome, then run:
+## Flutter version
 
-```sh
+The project was created with Flutter **3.47.6** and Dart **3.13.5**. Check your local SDK with `flutter --version`.
+
+## Setup and run
+
+Open the folder containing `pubspec.yaml` in VS Code. Use Chrome for the web version, or start an Android emulator or connect a phone.
+
+```powershell
+flutter --version
 flutter pub get
-flutter run
+flutter devices
+flutter run -d chrome
 ```
 
-## Devices
+For a phone or emulator, select its ID from `flutter devices` and pass it to `flutter run -d`.
 
-- **Smart Light** shows brightness and supports an on/off switch.
-- **Thermostat** changes its target temperature in 1 °C steps.
-- **Smart Speaker** shows volume and supports simulated play/pause.
+If Windows cannot find `flutter` and your SDK is installed under `C:\flutter_sdk\flutter`, add it to the current PowerShell session and retry:
 
-The morning schedule switch stores a preference for the current session.
-It does not trigger an automatic action.
+```powershell
+$env:Path = "C:\flutter_sdk\flutter\bin;$env:Path"
+```
 
-## Dart concepts
+## Features
 
-In lib/smart_device.dart, SmartDevice is abstract and defines getStatus().
-SmartLight, Thermostat, and SmartSpeaker extend it and implement the
-Connectable interface through the base class. SmartLight uses Schedulable.
-The dashboard uses the named SmartLight.livingRoom constructor and unnamed
-constructors for the thermostat and speaker. The model uses this and super
-for initialization and a static counter for the total shown on screen.
+| Device | Information | Controls |
+| --- | --- | --- |
+| **Smart Light** | Brightness starts at 75%. Status shows On or Off. | Toggle the light and set a morning light preference. |
+| **Thermostat** | Target temperature starts at 22 °C. Status shows the connection state. | Decrease or increase the target in 1 °C steps, from 10 to 35 °C. |
+| **Smart Speaker** | Volume starts at 40%. Status shows Playing or Paused. | Play or pause. |
+
+The **My home** dashboard displays one card per device. The bottom bar reads the total directly from the static device counter.
+
+## Assignment requirements
+
+| Concept | Implementation |
+| --- | --- |
+| Class, objects and inheritance | The dashboard creates one `SmartLight`, one `Thermostat` and one `SmartSpeaker`. All three extend `SmartDevice`. |
+| Constructors | The light uses the named `SmartLight.livingRoom()` constructor. The thermostat and speaker use unnamed constructors. |
+| Abstraction | `SmartDevice` is abstract and declares `getStatus()`. Each subclass supplies its own status. |
+| Interface | `Connectable` defines `isConnected` and `connect()`. The subclasses share the implementation in `SmartDevice`. |
+| Mixin | `SmartLight` uses `Schedulable` to hold the morning preference. |
+| Dart keywords | `static` holds `totalCreated`, `super.name` forwards the name to the base constructor, and `this` initializes fields and redirects the named constructor. |
+
+## Project structure
+
+| Path | Purpose |
+| --- | --- |
+| [lib/main.dart](lib/main.dart) | App entry point, dashboard, device cards and controls |
+| [lib/smart_device.dart](lib/smart_device.dart) | Device models, connection interface, mixin and static counter |
+| [test/dashboard_test.dart](test/dashboard_test.dart) | Widget checks for the cards, device controls and counter |
+
+## Test checklist
+
+| Check | Command or coverage | Result |
+| --- | --- | --- |
+| Static analysis | `dart analyze` | Passed |
+| Web compilation | `flutter build web` | Passed |
+| Three cards, device interactions, hidden debug banner and stable counter | `flutter test` | Test startup was blocked by a local connection error in the verification environment. |
+| Android runtime | Run on an emulator or phone | Pending |
+
+## Asset credits
+
+Device and navigation icons come from the Material Icons bundled with Flutter.
+
+## Known limitations
+
+Device states reset when the app restarts. The morning light preference is stored for the current session. The app simulates device actions locally, including speaker playback.
+
